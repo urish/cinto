@@ -1,3 +1,7 @@
+import os
+
+_dll_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../lib")
+os.environ['PATH'] += os.pathsep + _dll_path
 from fluidsynth import *
 
 c_void = c_int
