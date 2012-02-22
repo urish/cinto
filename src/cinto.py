@@ -5,16 +5,16 @@ Created on Feb 22, 2012
 '''
 
 import time
-import fluid2
+import fluid
 import os
 
 class CintoEngine(object):
     def __init__(self):
         myPath = os.path.dirname(os.path.abspath(__file__))
-        self.synth = fluid2.Synth(gain=1.0)
-        self.sequencer = fluid2.Sequencer()
+        self.synth = fluid.Synth()
+        self.sequencer = fluid.Sequencer()
         self.sequencer.attach(self.synth)
-        self.soundFont = self.synth.sfload(os.path.join(myPath, "../media/FluidR3 GM.sf2"))
+        self.soundFont = self.synth.load_sf2(os.path.join(myPath, "../media/FluidR3 GM.sf2"))
         self.quarter = 250
         self.time = 100
         self.chords = (0, 4, 7, 4, 7, 12, 4, 7)

@@ -1,5 +1,6 @@
-To use this you need a 32-bit version of python 2.6 or python 2.7 with the pyFluidSynth library.
+To use this you need a 32-bit version of python 2.6 or python 2.7 for win32.
 
-You quickly can install pyFluidSynth by running
+If you use another platform, you have to compile fluidsynth yourself and put it in the
+lib directory.
 
-	easy_install pyFluidSynth
+Run cinto.py for a demo music sequence.
