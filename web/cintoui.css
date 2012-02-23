@@ -1,0 +1,40 @@
+body {
+	background: url(images/black_thread.png) repeat;
+	color: #aaa;
+}
+
+h1 {
+	font-family: "Terminal Dosis";
+}
+
+.header {
+	background-color: #aaaaaa;
+}
+
+.playground {
+	position: relative;
+	background-color: #444;
+	height: 400px;
+}
+
+.pawn {
+	font-family: "Droid Sans";
+	font-size: 24px;
+	cursor: default;
+}
+
+.pawn-1 {
+	color: yellow;
+}
+
+.pawn-2 {
+	color: red;
+}
+
+.pawn-3 {
+	color: green;
+}
+
+.pawn-4 {
+	color: cyan;
+}

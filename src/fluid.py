@@ -29,6 +29,8 @@ fluid_synth_sfload = cfunc('fluid_synth_sfload', c_int,
                            ('update_midi_presets', c_int))
 fluid_synth_start = cfunc('fluid_synth_start', c_int,
                            ('synth', c_void_p))
+fluid_sequencer_get_tick = cfunc('fluid_sequencer_get_tick', c_uint,
+                                 ('synth', c_void_p))
 fluid_synth_program_select = cfunc('fluid_synth_program_select', c_int,
                                    ('synth', c_void_p),
                                    ('chan', c_int),
@@ -159,6 +161,9 @@ class Sequencer(object):
     def attach(self, synth):
         self.seq_id = fluid_sequencer_register_fluidsynth(self.sequencer, synth.synth)
         return self.seq_id
+    
+    def get_tick(self):
+        return fluid_sequencer_get_tick(self.sequencer)
 
     def send_note(self, time, chan, key, velocity, duration):
         with Event(-1, self.seq_id) as event:
