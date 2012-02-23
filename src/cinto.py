@@ -20,13 +20,20 @@ class CintoEngine(object):
         self.chords = (0, 4, 7, 4, 7, 12, 4, 7)
         self.chordIndex = 0
         self.running = False
-        self.tracks = [[127,0], [127,0], [127,0], [127,0]]
+        self.tracks = [[1,1], [1,0], [.8,.6], [.8,.4]]
+        self.programs = [
+            [(0, 0, 3.95)],
+            [(0, 0, 1.95), (2, 0, 1.95)],
+            [(0, 0, 0.95), (2, 4, 0.95)],
+            [(0, 0, 0.95), (1, 4, 0.95), (2, 7, 0.95), (3, 4, 0.95)],
+        ]
         
     def start(self):
         self.synth.start()
         self.synth.program_select(0, self.soundFont, 0, 0)
         self.synth.program_select(1, self.soundFont, 0, 33)
         self.synth.program_select(2, self.soundFont, 0, 27)
+        self.synth.program_select(3, self.soundFont, 0, 55)
         self.running = True
     
     def stop(self):
@@ -37,31 +44,27 @@ class CintoEngine(object):
         while True:
             self.nextMeasure()
             time.sleep(1)
-            
-    def updateTrack(self, channel, gain, pitch):
-        self.tracks[channel-1] = [int(gain * 127), int(pitch * 12)]
-        
-    def sendNote(self, channel, pitch, length):
-        gain = self.tracks[channel][0]
-        pitch += self.tracks[channel][1]
-        self.sequencer.send_note(self.time, channel, pitch, gain, length)
+
+    def getTrack(self, channel):
+        return self.tracks[channel-1]
                     
+    def updateTrack(self, channel, gain, program):
+        self.tracks[channel-1] = [gain, program]
+                      
     def nextMeasure(self):
-        _gain = lambda x: self.tracks[x][0]
-        _pitch = lambda x: self.tracks[x][1]
         if self.time < self.sequencer.get_tick():
             self.time = self.sequencer.get_tick() + 10
         b=60 + self.chords[self.chordIndex % len(self.chords)]
-        self.sendNote(0, b+0, int(self.quarter * 0.95))
-        self.sendNote(1, b-24, int(self.quarter * 3.95))
-        self.time += self.quarter
-        self.sendNote(0, b+4, int(self.quarter * 0.95))
-        self.sendNote(2, b+16, int(self.quarter * 2.95))
-        self.time += self.quarter
-        self.sendNote(0, b+7, int(self.quarter * 0.95))
-        self.time += self.quarter
-        self.sendNote(0, b+12, int(self.quarter * 0.95))
-        self.time += self.quarter
+        for channel in range(4):
+            gain, program = self.tracks[channel]
+            program = self.programs[int(program * (len(self.programs) - 0.0001))]
+            for index, pitch, duration in program:
+                if channel == 1:
+                    pitch -= 24
+                startTime = int(self.time + index * self.quarter) 
+                duration = int(duration * self.quarter)
+                self.sequencer.send_note(startTime, channel, b + pitch, int(gain * 127), duration)
+        self.time += 4 * self.quarter
         self.chordIndex += 1
 
 def main():
