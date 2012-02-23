@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var fieldSize = {
-		width: $('.playground-board').width() - $('pawn-1').width(),
-		height: $('.playground-board').height() - $('pawn-1').height(),
+		width: $('.playground-board').width() - $('.pawn-1').width(),
+		height: $('.playground-board').height() - $('.pawn-1').height(),
 	};
 	
 	$("#btn-play").click(function(event) {  
