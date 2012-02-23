@@ -9,5 +9,27 @@ $(document).ready(function(){
 		event.stopPropagation();
 	});
 	
-	$(".pawn").draggable();
+	function updatePawn(name, position) {
+		var pawnId = name.replace(/[^\d]/g, '');
+		var left = position.left / $('.playground-board').width();
+		var top = position.top / $('.playground-board').height();
+		$.ajax({
+			type: "POST",
+			url: "/pawn/" + pawnId, 
+			data: {
+				x: left,
+				y: top
+			}
+		});  
+	}
+	
+	$(".pawn").draggable({
+		containment: 'parent',
+		drag: function(event, ui) {
+			updatePawn(this.className, ui.position)
+		},
+		stop: function(event, ui) {
+			updatePawn(this.className, ui.position)
+		}
+	});
 });

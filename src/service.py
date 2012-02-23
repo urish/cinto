@@ -11,6 +11,13 @@ class StartHandler(web.RequestHandler):
 class StopHandler(web.RequestHandler):
     def get(self):
         cinto.stop()
+
+class MoveHandler(web.RequestHandler):
+    def post(self, pawnId):
+        x = float(self.get_argument("x"))
+        y = float(self.get_argument("y"))
+        cinto.updateTrack(int(pawnId), x, y)
+        
         
 def synthTimer():
     if cinto.running:
@@ -23,6 +30,7 @@ settings = {
 application = web.Application([
     (r"/start", StartHandler),
     (r"/stop", StopHandler),
+    (r"/pawn/([0-4])", MoveHandler),
     (r"/", web.RedirectHandler, {"url": "/index.html"}),
     (r"/(.*)", web.StaticFileHandler, dict(path=settings['static_path'])),
 ])
