@@ -8,3 +8,4 @@ For using the web service, you need to install tornado. You can get the win32 ve
 http://www.lfd.uci.edu/~gohlke/pythonlibs/
 
 Then just run service.py
+and go to http://localhost:8888/ in your web browser.
