@@ -45,6 +45,9 @@ class CintoEngine(object):
             self.nextMeasure()
             time.sleep(1)
 
+    def numTracks(self):
+        return len(self.tracks)
+
     def getTrack(self, channel):
         return self.tracks[channel-1]
                     
@@ -55,7 +58,7 @@ class CintoEngine(object):
         if self.time < self.sequencer.get_tick():
             self.time = self.sequencer.get_tick() + 10
         b=60 + self.chords[self.chordIndex % len(self.chords)]
-        for channel in range(4):
+        for channel in range(len(self.tracks)):
             gain, program = self.tracks[channel]
             program = self.programs[int(program * (len(self.programs) - 0.0001))]
             for index, pitch, duration in program:

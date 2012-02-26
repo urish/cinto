@@ -15,7 +15,7 @@ class StopHandler(web.RequestHandler):
 class PawnListHandler(web.RequestHandler):
     def get(self):
         result = []
-        for i in range(1, 5):
+        for i in range(1, cinto.numTracks() + 1):
             x, y = cinto.getTrack(int(i))
             result.append({"id": i, "x": x, "y": y})
         self.write({"pawns": result});
@@ -44,7 +44,7 @@ application = web.Application([
     (r"/start", StartHandler),
     (r"/stop", StopHandler),
     (r"/pawns", PawnListHandler),
-    (r"/pawns/([0-4])", PawnHandler),
+    (r"/pawns/([\d+])", PawnHandler),
     (r"/", web.RedirectHandler, {"url": "/index.html"}),
     (r"/(.*)", web.StaticFileHandler, dict(path=settings['static_path'])),
 ])
